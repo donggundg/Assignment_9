@@ -5,31 +5,61 @@ def path_to_file_list(path: str) -> List[str]:
     # Will this be working?
     lines = open(path, 'r').read().split('\n')
     return lines
+"""
+def train_file_list_to_json(english_file_list: List[str], german_file_list: List[str]) -> List[str]:
+    """"""Converts two lists of file paths into a list of json strings""""""
+    # Preprocess unwanted characters
+    def process_file(file):
+        if '\\' in file:
+            file = file.replace('\\', '\\\\')
+        if '/' in file:
+            file = file.replace('/', '\\/')
+        if '"' in file:
+            file = file.replace('"', '\\"')
+        return file
 
+    # Template for json file
+    template_start = '{"English":"'
+    template_mid = '","German":"'
+    template_end = '"}'
+
+    # Can this be working?
+    processed_file_list = []
+    for english_file, german_file in zip(english_file_list, german_file_list):
+        english_file = process_file(english_file)
+        german_file = process_file(german_file)
+
+        json_string = template_start + english_file + template_mid + german_file + template_end
+        processed_file_list.append(json_string)
+    return processed_file_list
+"""
 def train_file_list_to_json(english_file_list: List[str], german_file_list: List[str]) -> List[str]:
     """Converts two lists of file paths into a list of json strings"""
     # Preprocess unwanted characters
     def process_file(file):
         if '\\' in file:
             file = file.replace('\\', '\\\\')
-        if '/' or '"' in file:
+        if '/' in file:
             file = file.replace('/', '\\/')
+        if '"' in file:
             file = file.replace('"', '\\"')
         return file
 
     # Template for json file
-    template_start = '{\"English\":\"'
-    template_mid = '\",\"German\":\"'
-    template_end = '\"}'
+    template_start = '{"English":"'
+    template_mid = '","German":"'
+    template_end = '"}'
 
     # Can this be working?
     processed_file_list = []
     for english_file, german_file in zip(english_file_list, german_file_list):
         english_file = process_file(english_file)
-        english_file = process_file(german_file)
+        german_file = process_file(german_file)
 
-        processed_file_list.append(template_end + english_file + template_mid + german_file + template_start)
+        json_string = template_start + english_file + template_mid + german_file + template_end
+        processed_file_list.append(json_string)
     return processed_file_list
+
 
 
 def write_file_list(file_list: List[str], path: str) -> None:
@@ -49,3 +79,17 @@ if __name__ == "__main__":
     processed_file_list = train_file_list_to_json(english_file_list, german_file_list)
 
     write_file_list(processed_file_list, path+'concated.json')
+
+"""if __name__ == "__main__":
+    base_path = '/Users/donggun/Assignment_9/'
+
+    english_path = base_path + 'english.txt'
+    german_path = base_path + 'german.txt'
+    concated_path = base_path + 'concated.json'
+
+    english_file_list = path_to_file_list(english_path)
+    german_file_list = path_to_file_list(german_path)
+
+    processed_file_list = train_file_list_to_json(english_file_list, german_file_list)
+
+    write_file_list(processed_file_list, concated_path)"""
